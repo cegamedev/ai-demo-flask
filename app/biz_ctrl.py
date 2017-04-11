@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, mnist_client
+from . import app, mnist_client, square_client
 import json
 
 
@@ -23,3 +23,8 @@ def page_not_found(error):
 @app.route('/mnist')
 def mnist():
     return mnist_client.main(1)
+
+
+@app.route('/square')
+def square():
+    return square_client.main(1)
