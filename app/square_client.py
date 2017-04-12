@@ -44,7 +44,7 @@ class _ResultCounter(object):
 
 
 def do_inference(hostport, work_dir):
-    req_x = np.array([5.0])
+    req_x = np.array([[5.0], [1.0], [0.0]], dtype=np.float32)
     host, port = hostport.split(':')
     channel = implementations.insecure_channel(host, int(port))
     stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
@@ -62,15 +62,14 @@ def do_inference(hostport, work_dir):
     if exception:
         response_data = exception
     else:
-        response_data = numpy.array(
-            result_future.result().outputs['res_y'].float_val).max()
-        # response_data = result_future.result().outputs['res_y'].float_val
+        response_data = result_future.result().outputs['res_y']
     return response_data
 
 
-def main(_):
+def main():
     res_y = do_inference('littleorangelamp.com:9001', '/tmp')
-    print('\nResponse y: %s' % res_y)
+    print(np.array(res_y.float_val))
+    return 'over'
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, mnist_client, square_client
+from . import app, mnist_client, square_client, mnist_train_model
 import json
 
 
@@ -25,6 +25,11 @@ def mnist():
     return mnist_client.main(1)
 
 
-@app.route('/square')
-def square():
-    return square_client.main(1)
+@app.route('/page_square')
+def page_square():
+    return square_client.main()
+
+
+@app.route('/mnist_t_m')
+def mnist_t_m():
+    return mnist_train_model.main(1)
