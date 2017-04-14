@@ -20,14 +20,18 @@ def page_not_found(error):
     return 'error 404', 404
 
 
+@app.route('/api/calculator', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def api_calculator():
+    params_arr = request.get_json()
+    result = {}
+    result['data'] = square_client.main(params_arr['req_x'])
+    print result
+    return json.dumps(result, indent=4)
+
+
 @app.route('/mnist')
 def mnist():
     return mnist_client.main(1)
-
-
-@app.route('/page_square')
-def page_square():
-    return square_client.main()
 
 
 @app.route('/mnist_t_m')

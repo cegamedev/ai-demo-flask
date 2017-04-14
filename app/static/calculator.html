@@ -18,28 +18,33 @@
     <div class="page-group" id="page-calculator">
         <div class="page">
             <div class="content native-scroll">
+                
+                <div class="content-block" style="text-align:center;">
+                    {{x_lab}}<sup>2</sup> - 0.5 = {{y}}
+                </div>
+                <div class="content-block" style="text-align:center;" v-if="y!='?'">
+                    误差：|{{y}}-{{y_s}}| / {{y_s}} * 100 = {{loss}}% 
+                </div>
                 <div class="list-block">
                     <ul>
                         <li>
                             <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title label">
-                                        X
+                                        参数(X)
                                     </div>
                                     <div class="item-input">
-                                        <input type="text" placeholder="输入数字" v-model="x">
+                                        <input type="number" placeholder="输入数字" v-model="x">
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="content-block" style="text-align:center;">
-                    {{x_lab}}<sup>2</sup>-0.5={{y}}
-                </div>
                 <div class="content-block">
-                    <a href="#" class="button button-big button-fill button-success">计算</a>
+                    <a v-on:click="calculaorClick" class="button button-big button-fill button-success">计算</a>
                 </div>
+
             </div>
         </div>
     </div>

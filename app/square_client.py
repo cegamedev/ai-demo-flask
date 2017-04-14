@@ -43,8 +43,8 @@ class _ResultCounter(object):
         self._testtest = 1
 
 
-def do_inference(hostport, work_dir):
-    req_x = np.array([[5.0], [1.0], [0.0]], dtype=np.float32)
+def do_inference(hostport, work_dir, req_x):
+    req_x = np.array([[req_x]], dtype=np.float32)
     host, port = hostport.split(':')
     channel = implementations.insecure_channel(host, int(port))
     stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
@@ -57,19 +57,21 @@ def do_inference(hostport, work_dir):
 
     result_future = stub.Predict.future(request, 5.0)  # 5 seconds
 
-    response_data = ''
     exception = result_future.exception()
+    response_data = {'tensor': {}}
     if exception:
+        response_data['tensor']['error_code'] = 1
         response_data = exception
     else:
-        response_data = result_future.result().outputs['res_y']
+        response_data['tensor']['error_code'] = 0
+        response_data['tensor']['data'] = np.array(result_future.result().outputs[
+            'res_y'].float_val).tolist()
     return response_data
 
 
-def main():
-    res_y = do_inference('littleorangelamp.com:9001', '/tmp')
-    print(np.array(res_y.float_val))
-    return 'over'
+def main(req_x):
+    res_y = do_inference('littleorangelamp.com:9001', '/tmp', req_x)
+    return res_y
 
 
 if __name__ == '__main__':
