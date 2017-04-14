@@ -5,18 +5,14 @@ from . import app, mnist_client, square_client, mnist_train_model
 import json
 
 
-# @app.route('/')
-# def index():
-#     return redirect('/static/index.html')
-
-
-# @app.route('/static')
-# def static_entry():
-#     return redirect('/static/index.html')
-
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    return redirect('/static/index.html')
+
+
+@app.route('/static')
+def static_entry():
+    return redirect('/static/index.html')
 
 
 @app.errorhandler(404)

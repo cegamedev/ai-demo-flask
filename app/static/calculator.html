@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AI-DEMO</title>
+    <title>模拟一元二次方程</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -12,37 +12,33 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" href="css/common.css">
 
-
   </head>
   <body id="root" v-cloak>
 
-    <div class="page-group">
+    <div class="page-group" id="page-calculator">
         <div class="page">
-            <div class="content-inner">
-                <div class="content-block-title">
-                    示例
-                </div>
+            <div class="content native-scroll">
                 <div class="list-block">
                     <ul>
                         <li>
-                            <a href="/static/calculator.html" class="item-link item-content">
+                            <div class="item-content">
                                 <div class="item-inner">
-                                    <div class="item-title">
-                                        模拟一元二次方程
+                                    <div class="item-title label">
+                                        X
+                                    </div>
+                                    <div class="item-input">
+                                        <input type="text" placeholder="输入数字" v-model="x">
                                     </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/static/mnist.html" class="item-link item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                        手写数字识别
-                                    </div>
-                                </div>
-                            </a>
+                            </div>
                         </li>
                     </ul>
+                </div>
+                <div class="content-block" style="text-align:center;">
+                    {{x_lab}}<sup>2</sup>-0.5={{y}}
+                </div>
+                <div class="content-block">
+                    <a href="#" class="button button-big button-fill button-success">计算</a>
                 </div>
             </div>
         </div>
@@ -56,8 +52,8 @@
     <script type="text/javascript" src='libs/vue.js'></script>
     <script type="text/javascript" src='js/common.js'></script>
     <script type="text/javascript" src='js/service.js'></script>
-    <script type="text/javascript" src='js/index.js'></script>
     <script type="text/javascript" src='js/calculator.js'></script>
+
 
   </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AI-DEMO</title>
+    <title>手写数字识别</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -18,32 +18,15 @@
 
     <div class="page-group">
         <div class="page">
-            <div class="content-inner">
-                <div class="content-block-title">
-                    示例
-                </div>
-                <div class="list-block">
-                    <ul>
-                        <li>
-                            <a href="/static/calculator.html" class="item-link item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                        模拟一元二次方程
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/static/mnist.html" class="item-link item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                        手写数字识别
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="content-block" style="text-align:center;">
+                手写数字：1
+            </div>
+            <div class="j-cbwidth content-block">
+                <canvas id='canvas' style="background-color:#fff;"></canvas>
+            </div>
+            <div class="content-block">
+                <p><a class="button button-big button-fill button-success">识别</a></p>
+                <p><a id="c" class="button button-big button-fill button-danger">清除</a></p>
             </div>
         </div>
     </div>
@@ -56,8 +39,8 @@
     <script type="text/javascript" src='libs/vue.js'></script>
     <script type="text/javascript" src='js/common.js'></script>
     <script type="text/javascript" src='js/service.js'></script>
-    <script type="text/javascript" src='js/index.js'></script>
-    <script type="text/javascript" src='js/calculator.js'></script>
+    <script type="text/javascript" src='js/mnist.js'></script>
 
   </body>
+
 </html>
