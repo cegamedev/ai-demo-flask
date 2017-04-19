@@ -1,6 +1,5 @@
 $(function() {
 
-
 	var vu = new Vue({
 		el: '#root',
 		data: {
@@ -25,7 +24,22 @@ $(function() {
 
 			}
 		},
-		methods: {}
+		methods: {
+			uploadImageClick: function() {
+				var canvas = document.getElementById('canvas');
+				var photoBase64 = canvas.toDataURL('image/png');
+				var photoBlob = dataURLtoBlob(photoBase64);
+				var form = document.forms[0];
+				var imgform = new FormData(form);
+				imgform.append('file', photoBlob, 'temp.png');
+
+				AjaxFormUploadImage(imgform).then(function(data) {
+					console.log(data);
+				}, function(data) {
+					Zepto.toast("网络不给力");
+				});
+			}
+		}
 	});
 
 	Zepto.init();

@@ -1,8 +1,9 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, mnist_client, square_client, mnist_train_model
+from . import app, square_client, mnist_softmax_client, mnist_input_data
 import json
+import Image
 
 
 @app.route('/')
@@ -29,11 +30,25 @@ def api_calculator():
     return json.dumps(result, indent=4)
 
 
+@app.route('/api/upload_image', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def upload_image():
+    file = request.files['file']
+    size = (28, 28)
+    im = Image.open(file)
+    out = im.resize(size, Image.ANTIALIAS)
+    out.save('MNIST_data/test.png')
+    return {'s': 'over'}
+
+
 @app.route('/mnist')
 def mnist():
-    return mnist_client.main(1)
-
-
-@app.route('/mnist_t_m')
-def mnist_t_m():
-    return mnist_train_model.main(1)
+    test_data_set = mnist_input_data.read_data_sets(
+        'MNIST_data', one_hot=True).test
+    image, label = test_data_set.next_batch(1)
+    req_x = image[0]
+    result = mnist_softmax_client.main(req_x)
+    print(result)
+    data_arr = result['tensor']['data']
+    max_index = data_arr.index(max(data_arr))
+    print(max_index)
+    return 'over'

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>手写数字识别</title>
+    <title>手写数字识别(softmax)</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -25,9 +25,10 @@
                 <canvas id='canvas' style="background-color:#fff;"></canvas>
             </div>
             <div class="content-block">
-                <p><a class="button button-big button-fill button-success">识别</a></p>
+                <p><a class="button button-big button-fill button-success" v-on:click="uploadImageClick()">识别</a></p>
                 <p><a id="c" class="button button-big button-fill button-danger">清除</a></p>
             </div>
+            <form style="display:none;" method="post" enctype="multipart/form-data" action="/api/upload_image"></form>
         </div>
     </div>
 
