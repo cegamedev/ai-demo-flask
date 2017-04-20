@@ -1,31 +1,32 @@
 $(function() {
 
+	function dataURLtoBlob(dataurl) {
+		var arr = dataurl.split(','),
+			mime = arr[0].match(/:(.*?);/)[1],
+			bstr = atob(arr[1]),
+			n = bstr.length,
+			u8arr = new Uint8Array(n);
+		while (n--) {
+			u8arr[n] = bstr.charCodeAt(n);
+		}
+		return new Blob([u8arr], {
+			type: mime
+		});
+	}
+
 	var vu = new Vue({
 		el: '#root',
 		data: {
-			x: '',
-			y: '?',
-			x_lab: 'X'
+			number_lab: '???',
 		},
 		created: function() {
 			var self = this;
 		},
 		watch: {
-			'x': function(newV, oldV) {
-				var self = this;
-				self.y = '?';
-				if (!newV) {
-					self.x_lab = 'X';
-				} else {
-					self.x_lab = newV;
-				}
-			},
-			'y': function(newV, oldV) {
-
-			}
 		},
 		methods: {
 			uploadImageClick: function() {
+				var self = this;
 				var canvas = document.getElementById('canvas');
 				var photoBase64 = canvas.toDataURL('image/png');
 				var photoBlob = dataURLtoBlob(photoBase64);
@@ -34,7 +35,7 @@ $(function() {
 				imgform.append('file', photoBlob, 'temp.png');
 
 				AjaxFormUploadImage(imgform).then(function(data) {
-					console.log(data);
+					self.number_lab = data.data.predict_index;
 				}, function(data) {
 					Zepto.toast("网络不给力");
 				});
@@ -58,12 +59,13 @@ $(function() {
 
 
 		canvas.height = 300;
+		canvas.width = 300;
 		// canvas.width = getWidth();
-		canvas.width = $('.j-cbwidth').width();
+		// canvas.width = $('.j-cbwidth').width();
 		var ctx = canvas.getContext('2d');
 
-		ctx.lineWidth = 3.0; // 设置线宽
-		ctx.strokeStyle = "#CC0000"; // 设置线的颜色
+		ctx.lineWidth = 6.0; // 设置线宽
+		ctx.strokeStyle = "#cc0"; // 设置线的颜色
 
 		var flag = false;
 
@@ -72,10 +74,10 @@ $(function() {
 			if (flag) {
 				var p = pos(evt);
 				ctx.lineTo(p.x, p.y);
-				ctx.lineWidth = 6.0; // 设置线宽
-				ctx.shadowColor = "#CC0000";
-				ctx.shadowBlur = 1;
-				//ctx.shadowOffsetX = 6;
+				// ctx.lineWidth = 6.0; // 设置线宽
+				// ctx.shadowColor = "#ccc";
+				// ctx.shadowBlur = 1;
+				// ctx.shadowOffsetX = 6;
 				ctx.stroke();
 			}
 		}
@@ -97,6 +99,7 @@ $(function() {
 
 		var clear = document.getElementById('c');
 		clear.addEventListener('click', function() {
+			vu.$data.number_lab = '???';
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		}, false);
 

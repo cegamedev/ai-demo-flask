@@ -19,10 +19,10 @@
     <div class="page-group">
         <div class="page">
             <div class="content-block" style="text-align:center;">
-                手写数字：1
+                手写数字：{{number_lab}}
             </div>
             <div class="j-cbwidth content-block">
-                <canvas id='canvas' style="background-color:#fff;"></canvas>
+                <canvas id='canvas' style="background-color:#fff;display:block;margin:0 auto;"></canvas>
             </div>
             <div class="content-block">
                 <p><a class="button button-big button-fill button-success" v-on:click="uploadImageClick()">识别</a></p>
