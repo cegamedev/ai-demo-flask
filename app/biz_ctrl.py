@@ -58,12 +58,16 @@ def upload_image():
     gray_im = im.convert('L')
     # im.save('app/static/img/test_auto.png')
     # 转数组，并由二维转一维
+
+    gray_im = Image.open('app/static/img/test_cv.png')
+
     gray_im_arr = np.array(gray_im).reshape(784) / 255.0
     result = {}
     result['data'] = mnist_softmax_client.main(gray_im_arr)
     soft_arr = result['data']['tensor']['data']
     print(soft_arr)
     max_index = soft_arr.index(max(soft_arr))
+    print(max_index)
     result['data']['predict_index'] = max_index
     return json.dumps(result, indent=4)
 
