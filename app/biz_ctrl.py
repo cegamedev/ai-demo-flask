@@ -51,11 +51,11 @@ def api_calculator():
 @app.route('/api/upload_image', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def upload_image():
     file = request.files['file']
-    size = (28, 28)
-    # img = Image.open(file)
+    # size = (28, 28)
+    img = Image.open(file)
     # img = img.filter(ImageFilter.CONTOUR)
     # img.thumbnail(size)
-    # img.save('app/static/img/test.png')
+    img.save('app/static/img/test.png')
     # # 转灰度
     # gray_im = img.convert('L')
     # gray_im.save('app/static/img/test_auto.png')
@@ -63,28 +63,68 @@ def upload_image():
 
     # # gray_im = Image.open('app/static/img/test_cv.png')
 
-    img = cv2.imread('app/static/img/mnist/images/10_10.png', 0)
+    img = cv2.imread('app/static/img/test.png', 0)
     img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
     # img = img.convert('F')
-    cv2.imwrite("app/static/img/test.png", img)
-    # img = cv2.blur(img, (3, 3))
-    # img = cv2.GaussianBlur(img, (3, 3), 0)
-    # img = cv2.bilateralFilter(img, 21, 21, 21)
-    # img = cv2.medianBlur(img, 9)
+    # cv2.imwrite("app/static/img/test.png", img)
+    # img = cv2.blur(img, (2, 2))
+    # img = cv2.GaussianBlur(img, (2, 2), 0)
+    # img = cv2.bilateralFilter(img, 2, 2, 2)
+    # img = cv2.medianBlur(img, 3)
 
     # cv2.imwrite("app/static/img/test_auto.png", img)
 
+    # img = cv2.threshold(img, 127, 255, cv2.THRESH_TRUNC)
+
     # img = cv2.adaptiveThreshold(
-    #     img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 3, 3)
+    #     img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 0)
+
+    # img = cv2.GaussianBlur(img, (3, 3), 0)
+
+    # img = cv2.adaptiveThreshold(
+    #     img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 5, 0)
     # cv2.imwrite("app/static/img/test_auto2.png", img)
 
     # img = Image.open('app/static/img/test_m_1.png')
     # img = img.convert('F')
 
     # img = cv2.equalizeHist(img)
-    # cv2.imwrite("app/static/img/test_auto2.png", img)
+    # cv2.imwrite("app/static/img/test_mnist_9.png", img)
 
-    gray_im_arr = np.array(img).reshape(784)
+    # ret, thresh1 = cv2.threshold(img, 44,
+    #                              0, cv2.THRESH_TRUNC)
+
+    ret, thresh1 = cv2.threshold(img, 0,
+                                 255, cv2.THRESH_BINARY)
+
+    # ret, thresh1 = cv2.threshold(img, 44,
+    #                              255, cv2.THRESH_TOZERO_INV)
+
+    cv2.imwrite("app/static/img/test_mnist_9.png", thresh1)
+
+    gray_im_arr = np.array(thresh1).reshape(784)
+
+    # idx = gray_im_arr != 0
+    # gray_im_arr_f_mean = np.mean(gray_im_arr[idx])
+
+    # print(gray_im_arr_f_mean)
+
+    # g_mean = np.mean(gray_im_arr)
+    # g_var = np.var(gray_im_arr)
+    # print(g_mean)
+    # print(g_var)
+    # gray_im_arr = gray_im_arr - g_mean
+    # print(np.mean(gray_im_arr))
+    # gray_im_arr = gray_im_arr / g_var
+    # print(np.var(gray_im_arr))
+    # print(gray_im_arr)
+
+    # gray_im_arr = gray_im_arr - np.mean(gray_im_arr)
+
+    # gray_im_arr = gray_im_arr / (np.var(gray_im_arr) + 0.00001)
+
+    # print(gray_im_arr)
+
     result = {}
     result['data'] = mnist_softmax_client.main(gray_im_arr)
     soft_arr = result['data']['tensor']['data']
