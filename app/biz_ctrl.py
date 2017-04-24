@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, square_client, mnist_softmax_client, mnist_input_data
+from . import app, square_client, mnist_pre_make, mnist_softmax_client, mnist_input_data
 import json
 import cv2
 import cv2.cv as cv
@@ -55,7 +55,7 @@ def upload_image():
     img = Image.open(file)
     # img = img.filter(ImageFilter.CONTOUR)
     # img.thumbnail(size)
-    img.save('app/static/img/test.png')
+    img.save('app/static/img/mnist_tmp.png')
     # # 转灰度
     # gray_im = img.convert('L')
     # gray_im.save('app/static/img/test_auto.png')
@@ -63,8 +63,8 @@ def upload_image():
 
     # # gray_im = Image.open('app/static/img/test_cv.png')
 
-    img = cv2.imread('app/static/img/test.png', 0)
-    img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
+    # img = cv2.imread('app/static/img/test_mnist_cv_9.png', 0)
+    # img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
     # img = img.convert('F')
     # cv2.imwrite("app/static/img/test.png", img)
     # img = cv2.blur(img, (2, 2))
@@ -94,15 +94,17 @@ def upload_image():
     # ret, thresh1 = cv2.threshold(img, 44,
     #                              0, cv2.THRESH_TRUNC)
 
-    ret, thresh1 = cv2.threshold(img, 0,
-                                 255, cv2.THRESH_BINARY)
+    # ret, thresh1 = cv2.threshold(img, 0,
+    #                              255, cv2.THRESH_BINARY)
 
     # ret, thresh1 = cv2.threshold(img, 44,
     #                              255, cv2.THRESH_TOZERO_INV)
 
-    cv2.imwrite("app/static/img/test_mnist_9.png", thresh1)
+    # cv2.imwrite("app/static/img/test_mnist_9.png", thresh1)
 
-    gray_im_arr = np.array(thresh1).reshape(784)
+    img = mnist_pre_make.main('app/static/img/mnist_tmp.png')
+
+    gray_im_arr = np.array(img).reshape(784) / 255.0
 
     # idx = gray_im_arr != 0
     # gray_im_arr_f_mean = np.mean(gray_im_arr[idx])
