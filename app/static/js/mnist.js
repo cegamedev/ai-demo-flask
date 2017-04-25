@@ -107,8 +107,8 @@ $(function() {
 		function pos(event) {
 			var x, y;
 			if (isTouch(event)) {
-				x = event.touches[0].pageX;
-				y = event.touches[0].pageY;
+				x = event.touches[0].pageX - $("#canvas").offset().left;
+				y = event.touches[0].pageY - $("#canvas").offset().top;
 			} else {
 				x = event.layerX;
 				y = event.layerY;

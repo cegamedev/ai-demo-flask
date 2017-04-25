@@ -4,7 +4,6 @@ from flask import request, redirect
 from . import app, square_client, mnist_pre_make, mnist_softmax_client, mnist_input_data
 import json
 import cv2
-import cv2.cv as cv
 from PIL import Image, ImageFilter
 import numpy as np
 
