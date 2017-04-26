@@ -134,17 +134,3 @@ def upload_image():
     print(max_index)
     result['data']['predict_index'] = max_index
     return json.dumps(result, indent=4)
-
-
-@app.route('/mnist')
-def mnist():
-    test_data_set = mnist_input_data.read_data_sets(
-        'MNIST_data', one_hot=True).test
-    image, label = test_data_set.next_batch(1)
-    req_x = image[0]
-    result = mnist_softmax_client.main(req_x)
-    print(result)
-    data_arr = result['tensor']['data']
-    max_index = data_arr.index(max(data_arr))
-    print(max_index)
-    return 'over'

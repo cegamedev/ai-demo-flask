@@ -24,13 +24,13 @@ def shift(img, sx, sy):
 def main(file):
     gray = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
 
-    gray = cv2.blur(gray, (2, 2))
+    # gray = cv2.blur(gray, (2, 2))
 
     (thresh, gray) = cv2.threshold(gray, 128,
                                    255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
     # gray = cv2.resize(255 - gray, (28, 28))
-    gray = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_CUBIC)
+    # gray = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_CUBIC)
 
     while np.sum(gray[0]) == 0:
         gray = gray[1:]
@@ -67,5 +67,5 @@ def main(file):
     shifted = shift(gray, shiftx, shifty)
     gray = shifted
 
-    # cv2.imwrite("MNIST_data/images/test_mnist_cv_9.png", gray)
+    # cv2.imwrite("app/static/img/gray_test.png", gray)
     return gray
