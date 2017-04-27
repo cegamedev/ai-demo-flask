@@ -39,10 +39,35 @@ def page_not_found(error):
 # 模拟一元二次方程
 @app.route('/api/calculator', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def api_calculator():
-    params_arr = request.get_json()
+    params_arr = request.get_data()
+    params_arr = json.loads(params_arr)
+    req_x_s = params_arr['req_x']
+    req_x_f = float(req_x_s)
+
+    req_x = 0
+    if req_x_f >= 1 or req_x_f <= -1:
+        req_x_i = np.abs(int(req_x_s))
+        req_x_len = np.power(10, len(str(req_x_i)))
+        req_x = req_x_f / req_x_len
+    else:
+        req_x = req_x_f
+
+    print('req_x', req_x)
+
     result = {}
-    result['data'] = square_client.main(params_arr['req_x'])
-    print result
+    res_tensor = square_client.main(req_x)
+    print('res_tensor', res_tensor)
+    res_y = res_tensor['tensor']['data'][0]
+
+    # 避免一个大数加减一个较小的数
+    # res_y = (res_y + 0.5) * np.square(req_x_len) - 0.5
+    if req_x_f >= 1 or req_x_f <= -1:
+        res_y = res_y + (np.square(req_x_f) - np.square(req_x))
+
+    res_tensor['tensor']['data'][0] = res_y
+    result['data'] = res_tensor
+
+    print('result', result)
     return json.dumps(result, indent=4)
 
 
