@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, square_client, mnist_pre_make, mnist_softmax_client, mnist_input_data
+from . import app, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client
 import json
 import cv2
 from PIL import Image, ImageFilter
@@ -153,6 +153,26 @@ def upload_image():
 
     result = {}
     result['data'] = mnist_softmax_client.main(gray_im_arr)
+    soft_arr = result['data']['tensor']['data']
+    print(soft_arr)
+    max_index = soft_arr.index(max(soft_arr))
+    print(max_index)
+    result['data']['predict_index'] = max_index
+    return json.dumps(result, indent=4)
+
+
+# 简单cnn手写数字识别
+@app.route('/api/upload_image_simple_cnn', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def upload_image_simple_cnn():
+    file = request.files['file']
+    img = Image.open(file)
+    img.save('app/static/img/mnist_simple_cnn_tmp.png')
+    img = mnist_pre_make.main('app/static/img/mnist_simple_cnn_tmp.png')
+    gray_im_arr = np.array(img).reshape(784) / 255.0
+
+    result = {}
+    result['data'] = mnist_simple_cnn_client.main(gray_im_arr)
+    print(result)
     soft_arr = result['data']['tensor']['data']
     print(soft_arr)
     max_index = soft_arr.index(max(soft_arr))
