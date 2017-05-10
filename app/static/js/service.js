@@ -74,3 +74,28 @@ function AjaxFormUploadImageSimpleCnn(formData) {
     });
     return def.promise();
 }
+
+function AjaxFormUploadImageCifar10Cnn(formData) {
+    console.log("api/upload_image_cifar10_cnn", formData);
+    var def = $.Deferred();
+    var action = host + "api/upload_image_cifar10_cnn";
+    $.ajax({
+        url: action,
+        type: "post",
+        dataType: 'json',
+        data: formData,
+        async: true,
+        processData: false,
+        contentType: false,
+        timeout: maxtime,
+        success: function(data) {
+            console.log("api/upload_image_cifar10_cnn-success", data);
+            def.resolve(data);
+        },
+        error: function(data) {
+            console.log("api/upload_image_cifar10_cnn-error", data);
+            def.reject(data);
+        }
+    });
+    return def.promise();
+}
