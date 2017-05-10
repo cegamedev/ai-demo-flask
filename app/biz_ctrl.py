@@ -39,9 +39,22 @@ def page_not_found(error):
 # 模拟一元二次方程
 @app.route('/api/calculator', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def api_calculator():
-    params_arr = request.get_json()
+    params_arr = request.get_data()
+    params_arr = json.loads(params_arr)
+    req_x_f = float(params_arr['req_x'])
+    req_x_i = int(req_x_f)
+    req_x_i_len = len(str(req_x_i))
+
+    delt_x = 0
+    if req_x_f >= 1:
+        print('>=')
+    elif req_x_f <= -1:
+        print('<=')
+    else:
+        print('e')
+
     result = {}
-    result['data'] = square_client.main(params_arr['req_x'])
+    result['data'] = square_client.main(req_x_f)
     print result
     return json.dumps(result, indent=4)
 
