@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import numpy as np
 import cv2
 import math
@@ -32,6 +34,7 @@ def main(file):
     # gray = cv2.resize(255 - gray, (28, 28))
     # gray = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_CUBIC)
 
+    # 找到数字最小边框
     while np.sum(gray[0]) == 0:
         gray = gray[1:]
 
@@ -46,6 +49,7 @@ def main(file):
 
     rows, cols = gray.shape
 
+    # 缩放到20
     if rows > cols:
         factor = 20.0 / rows
         rows = 20
@@ -57,12 +61,14 @@ def main(file):
         rows = int(round(rows * factor))
         gray = cv2.resize(gray, (cols, rows))
 
+    # 放到28中心
     colsPadding = (int(math.ceil((28 - cols) / 2.0)),
                    int(math.floor((28 - cols) / 2.0)))
     rowsPadding = (int(math.ceil((28 - rows) / 2.0)),
                    int(math.floor((28 - rows) / 2.0)))
     gray = np.lib.pad(gray, (rowsPadding, colsPadding), 'constant')
 
+    # 中心化
     shiftx, shifty = getBestShift(gray)
     shifted = shift(gray, shiftx, shifty)
     gray = shifted

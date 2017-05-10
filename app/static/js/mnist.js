@@ -1,19 +1,5 @@
 $(function() {
 
-	function dataURLtoBlob(dataurl) {
-		var arr = dataurl.split(','),
-			mime = arr[0].match(/:(.*?);/)[1],
-			bstr = atob(arr[1]),
-			n = bstr.length,
-			u8arr = new Uint8Array(n);
-		while (n--) {
-			u8arr[n] = bstr.charCodeAt(n);
-		}
-		return new Blob([u8arr], {
-			type: mime
-		});
-	}
-
 	var vu = new Vue({
 		el: '#root',
 		data: {
@@ -29,7 +15,7 @@ $(function() {
 				var self = this;
 				var canvas = document.getElementById('canvas');
 				var photoBase64 = canvas.toDataURL('image/png');
-				var photoBlob = dataURLtoBlob(photoBase64);
+				var photoBlob = DataURLtoBlob(photoBase64);
 				var form = document.forms[0];
 				var imgform = new FormData(form);
 				imgform.append('file', photoBlob, 'temp.png');

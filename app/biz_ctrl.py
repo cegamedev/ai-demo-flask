@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, square_client, mnist_pre_make, mnist_softmax_client, mnist_input_data
+from . import app, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client
 import json
 import cv2
 from PIL import Image, ImageFilter
@@ -41,21 +41,33 @@ def page_not_found(error):
 def api_calculator():
     params_arr = request.get_data()
     params_arr = json.loads(params_arr)
-    req_x_f = float(params_arr['req_x'])
-    req_x_i = int(req_x_f)
-    req_x_i_len = len(str(req_x_i))
+    req_x_s = params_arr['req_x']
+    req_x_f = float(req_x_s)
 
-    delt_x = 0
-    if req_x_f >= 1:
-        print('>=')
-    elif req_x_f <= -1:
-        print('<=')
+    req_x = 0
+    if req_x_f >= 1 or req_x_f <= -1:
+        req_x_i = np.abs(int(req_x_s))
+        req_x_len = np.power(10, len(str(req_x_i)))
+        req_x = req_x_f / req_x_len
     else:
-        print('e')
+        req_x = req_x_f
+
+    print('req_x', req_x)
 
     result = {}
-    result['data'] = square_client.main(req_x_f)
-    print result
+    res_tensor = square_client.main(req_x)
+    print('res_tensor', res_tensor)
+    res_y = res_tensor['tensor']['data'][0]
+
+    # 避免一个大数加减一个较小的数
+    # res_y = (res_y + 0.5) * np.square(req_x_len) - 0.5
+    if req_x_f >= 1 or req_x_f <= -1:
+        res_y = res_y + (np.square(req_x_f) - np.square(req_x))
+
+    res_tensor['tensor']['data'][0] = res_y
+    result['data'] = res_tensor
+
+    print('result', result)
     return json.dumps(result, indent=4)
 
 
@@ -147,3 +159,44 @@ def upload_image():
     print(max_index)
     result['data']['predict_index'] = max_index
     return json.dumps(result, indent=4)
+
+
+# 简单cnn手写数字识别
+@app.route('/api/upload_image_simple_cnn', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def upload_image_simple_cnn():
+    file = request.files['file']
+    img = Image.open(file)
+    img.save('app/static/img/mnist_simple_cnn_tmp.png')
+    img = mnist_pre_make.main('app/static/img/mnist_simple_cnn_tmp.png')
+    gray_im_arr = np.array(img).reshape(784) / 255.0
+
+    result = {}
+    result['data'] = mnist_simple_cnn_client.main(gray_im_arr)
+    print(result)
+    soft_arr = result['data']['tensor']['data']
+    print(soft_arr)
+    max_index = soft_arr.index(max(soft_arr))
+    print(max_index)
+    result['data']['predict_index'] = max_index
+    return json.dumps(result, indent=4)
+
+
+# 简单cnn手写数字识别
+@app.route('/api/upload_image_cifar10_cnn', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def upload_image_cifar10_cnn():
+    file = request.files['file']
+    img = Image.open(file)
+    img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
+    return ''
+    # img = mnist_pre_make.main('app/static/img/mnist_simple_cnn_tmp.png')
+    # gray_im_arr = np.array(img).reshape(784) / 255.0
+
+    # result = {}
+    # result['data'] = mnist_simple_cnn_client.main(gray_im_arr)
+    # print(result)
+    # soft_arr = result['data']['tensor']['data']
+    # print(soft_arr)
+    # max_index = soft_arr.index(max(soft_arr))
+    # print(max_index)
+    # result['data']['predict_index'] = max_index
+    # return json.dumps(result, indent=4)
