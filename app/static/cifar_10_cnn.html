@@ -24,21 +24,29 @@
             <div class="content-block" style="text-align:center;">
                 识别结果：{{img_lab}}
             </div>
-            <div class="content-block">
+            <div class="content-block" style="padding:0">
                 <div id="j-image-div" style="margin:0 auto;width:300px;height:300px;display:none;">
                     <img id="j-image" src="" style="width:100%;height:100%;">
+                    <canvas id="j-canvas" style="background-color:#fff;display:none;"></canvas>
                 </div>
             </div>
             <div class="content-block">
                 <p>
                     <a class="button button-big button-fill">
-                        <input id="j-input-img" type="file" style="opacity: 0;position: absolute;left: 0;top: 0;width: 100%;height: 100%;" capture="camera" accept="image/*" >
-                        <!-- <input id="j-input-img" type="file" style="display:none;" capture="camera" accept="image/*,video/*" > -->
-                        拍照并识别
+                        <input id="j-input-img" type="file" style="opacity: 0;position: absolute;left: 0;top: 0;width: 100%;height: 100%;"  accept="image/*" >
+                        上传照片并识别
                     </a>
                 </p>
             </div>
             <form style="display:none;" enctype="multipart/form-data"></form>
+            <div class="content-block">
+                <p>
+                    CIFAR-10数据集包含了60000张32*32的彩色图片，一共标注了10类，每一类6000张。
+                </p>
+                <p>
+                    这10类分别是：飞机，小汽车，鸟，猫，鹿，狗，青蛙，马，船，卡车。
+                </p>
+            </div>
         </div>
     </div>
 

@@ -1,3 +1,15 @@
 [v-cloak] {
   display: none;
 }
+
+body {
+	overflow: auto;
+}
+
+.page, .page-group{
+	overflow: auto;
+}
+
+.page-group.page-current, .page.page-current{
+	overflow: auto;
+}

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client
+from . import app, common_fun, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client
 import json
 import cv2
 from PIL import Image, ImageFilter
@@ -186,6 +186,9 @@ def upload_image_simple_cnn():
 def upload_image_cifar10_cnn():
     file = request.files['file']
     img = Image.open(file)
+    # img = img.rotate(90)
+    width, height = img.size
+    img = common_fun.resize(width, height, 32, 32, img)
     img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
     return ''
     # img = mnist_pre_make.main('app/static/img/mnist_simple_cnn_tmp.png')

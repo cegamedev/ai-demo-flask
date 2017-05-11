@@ -47,20 +47,44 @@ $(function() {
 		if (/^image\/\w+$/.test(file.type)) {
 			fileReader.readAsDataURL(file);
 			fileReader.onload = function(e) {
+				var canvas = document.getElementById("j-canvas");
+				var ctx = canvas.getContext("2d");
+
 				var photoBase64 = this.result;
-				$("#j-image").attr('src',photoBase64);
-				$("#j-image-div").show();
 
-				var photoBlob = DataURLtoBlob(photoBase64);
-				var form = document.forms[0];
-				var imgform = new FormData(form);
-				imgform.append('file', photoBlob, 'temp.png');
+				var img = new Image();
+				img.onload = function() {
+					var imgW = img.width;
+					var imgH = img.height;
+					
+					var sx = sy = swh = 0;
+					if (imgW > imgH) {
+						swh = imgH;
+						sx = (imgW - imgH) / 2;
+						sy = 0;
+					} else {
+						swh = imgW;
+						sx = 0;
+						sy = (imgH - imgW) / 2;
+					}
+					canvas.width = canvas.height = swh;
+					ctx.drawImage(img, sx, sy, swh, swh, 0, 0, swh, swh);
 
-				AjaxFormUploadImageCifar10Cnn(imgform).then(function(data) {
-					self.number_lab = data.data.predict_index;
-				}, function(data) {
-					Zepto.toast("网络不给力");
-				});
+					var photoBase64 = canvas.toDataURL('image/png');
+					$('#j-image').attr('src',photoBase64);
+					$('#j-image-div').show();
+					var photoBlob = DataURLtoBlob(photoBase64);
+					var form = document.forms[0];
+					var imgform = new FormData(form);
+					imgform.append('file', photoBlob, 'temp.png');
+
+					AjaxFormUploadImageCifar10Cnn(imgform).then(function(data) {
+						self.number_lab = data.data.predict_index;
+					}, function(data) {
+						Zepto.toast("网络不给力");
+					});
+				};
+				img.src = photoBase64;
 
 			};
 		}
