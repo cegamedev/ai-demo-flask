@@ -87,7 +87,7 @@ function AjaxFormUploadImageCifar10Cnn(formData) {
         async: true,
         processData: false,
         contentType: false,
-        timeout: maxtime,
+        timeout: 30000,
         success: function(data) {
             console.log("api/upload_image_cifar10_cnn-success", data);
             def.resolve(data);

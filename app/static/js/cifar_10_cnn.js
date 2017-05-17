@@ -6,29 +6,23 @@ $(function() {
 		el: '#root',
 		data: {
 			img_lab: '???',
+			const_data:{
+				'0':'飞机',
+				'1':'小汽车',
+				'2':'鸟',
+				'3':'猫',
+				'4':'鹿',
+				'5':'狗',
+				'6':'青蛙',
+				'7':'马',
+				'8':'船',
+				'9':'卡车'
+			}
 		},
 		created: function() {
 			var self = this;
 		},
-		watch: {},
-		methods: {
-			uploadImageClick: function() {
-				return;
-				var self = this;
-				var canvas = document.getElementById('canvas');
-				var photoBase64 = canvas.toDataURL('image/png');
-				var photoBlob = DataURLtoBlob(photoBase64);
-				var form = document.forms[0];
-				var imgform = new FormData(form);
-				imgform.append('file', photoBlob, 'temp.png');
-
-				AjaxFormUploadImageSimpleCnn(imgform).then(function(data) {
-					self.number_lab = data.data.predict_index;
-				}, function(data) {
-					Zepto.toast("网络不给力");
-				});
-			}
-		}
+		watch: {}
 	});
 
 	Zepto.init();
@@ -79,7 +73,8 @@ $(function() {
 					imgform.append('file', photoBlob, 'temp.png');
 
 					AjaxFormUploadImageCifar10Cnn(imgform).then(function(data) {
-						self.number_lab = data.data.predict_index;
+						console.log(data);
+						vu.$data.img_lab = vu.$data.const_data[data.data];
 					}, function(data) {
 						Zepto.toast("网络不给力");
 					});

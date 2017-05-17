@@ -18,3 +18,9 @@ def resize(w, h, w_box, h_box, pil_image):
     width = int(w * factor)
     height = int(h * factor)
     return pil_image.resize((width, height), Image.ANTIALIAS)
+
+
+# 标准化,mu（即均值）用np.average()，sigma（即标准差）用np.std()即可
+def Z_ScoreNormalization(x, mu, sigma):
+    x = (x - mu) / sigma
+    return x

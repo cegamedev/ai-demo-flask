@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import request, redirect
-from . import app, common_fun, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client
+from . import app, common_fun, mnist_input_data, square_client, mnist_pre_make, mnist_softmax_client, mnist_simple_cnn_client, cifar10_cnn_client
 import json
 import cv2
 from PIL import Image, ImageFilter
@@ -181,25 +181,23 @@ def upload_image_simple_cnn():
     return json.dumps(result, indent=4)
 
 
-# 简单cnn手写数字识别
+# CIFAR-10数据集(CNN)
 @app.route('/api/upload_image_cifar10_cnn', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def upload_image_cifar10_cnn():
     file = request.files['file']
     img = Image.open(file)
     # img = img.rotate(90)
     width, height = img.size
-    img = common_fun.resize(width, height, 32, 32, img)
-    img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
-    return ''
-    # img = mnist_pre_make.main('app/static/img/mnist_simple_cnn_tmp.png')
-    # gray_im_arr = np.array(img).reshape(784) / 255.0
+    img = common_fun.resize(width, height, 24, 24, img)
+    # img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
+    img = img.convert('RGB')
+    img_arr = np.array(img)
 
-    # result = {}
-    # result['data'] = mnist_simple_cnn_client.main(gray_im_arr)
-    # print(result)
-    # soft_arr = result['data']['tensor']['data']
-    # print(soft_arr)
-    # max_index = soft_arr.index(max(soft_arr))
-    # print(max_index)
-    # result['data']['predict_index'] = max_index
-    # return json.dumps(result, indent=4)
+    img_arr = common_fun.Z_ScoreNormalization(
+        img_arr, np.average(img_arr), np.std(img_arr))
+
+    result = {}
+    res_data = cifar10_cnn_client.main(img_arr)
+    res10_data = res_data['tensor']['data'][0:10]
+    result['data'] = res10_data.index(max(res10_data))
+    return json.dumps(result, indent=4)
