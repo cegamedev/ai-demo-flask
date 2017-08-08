@@ -188,19 +188,20 @@ def upload_image_cifar10_cnn():
     img = Image.open(file)
     # img = img.rotate(90)
     width, height = img.size
-    print(width, height)
 
-    # img = common_fun.resize(width, height, 24, 24, img)
-    # # img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
-    # img = img.convert('RGB')
-    # img_arr = np.array(img)
+    img = common_fun.resize(width, height, 24, 24, img)
+    # img.save('app/static/img/mnist_cifar10_cnn_tmp.png')
+    img = img.convert('RGB')
+    img_arr = np.array(img)
 
-    # img_arr = common_fun.Z_ScoreNormalization(
-    #     img_arr, np.average(img_arr), np.std(img_arr))
+    img_arr = common_fun.Z_ScoreNormalization(
+        img_arr, np.average(img_arr), np.std(img_arr))
+
+    # print(img_arr.shape)
 
     result = {}
-    # res_data = cifar10_cnn_client.main(img_arr)
-    # res10_data = res_data['tensor']['data'][0:10]
-    # result['data'] = res10_data.index(max(res10_data))
-    result['data'] = 'ddd'
+    res_data = cifar10_cnn_client.main(img_arr)
+    # print(res_data)
+    res10_data = res_data['tensor']['data']
+    result['data'] = res10_data.index(max(res10_data))
     return json.dumps(result, indent=4)
