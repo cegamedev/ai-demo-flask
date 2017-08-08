@@ -70,7 +70,7 @@ def do_inference(hostport, work_dir, req_x):
 
 
 def main(req_x):
-    res_y = do_inference('littleorangelamp.com:9001', '/tmp', req_x)
+    res_y = do_inference('littleorangelamp.com:9000', '/tmp', req_x)
     return res_y
 
 

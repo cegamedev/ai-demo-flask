@@ -44,7 +44,7 @@ class _ResultCounter(object):
 
 
 def do_inference(hostport, work_dir, req_x):
-    req_x = np.array([req_x] * 128, dtype=np.float32)
+    req_x = np.array([req_x], dtype=np.float32)
     host, port = hostport.split(':')
     channel = implementations.insecure_channel(host, int(port))
     stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
@@ -55,7 +55,7 @@ def do_inference(hostport, work_dir, req_x):
     request.inputs['req_x'].CopyFrom(
         tf.contrib.util.make_tensor_proto(req_x))
 
-    result_future = stub.Predict.future(request, 30.0)  # 5 seconds
+    result_future = stub.Predict.future(request, 10.0)  # 5 seconds
 
     exception = result_future.exception()
     print(exception)
