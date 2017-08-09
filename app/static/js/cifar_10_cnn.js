@@ -72,13 +72,13 @@ $(function() {
 					var imgform = new FormData(form);
 					imgform.append('file', photoBlob, 'temp.png');
 
-					$.showPreloader('上传中');
+					Zepto.showPreloader('上传中');
 					AjaxFormUploadImageCifar10Cnn(imgform).then(function(data) {
-						$.hidePreloader();
+						Zepto.hidePreloader();
 						console.log(data);
 						vu.$data.img_lab = vu.$data.const_data[data.data];
 					}, function(data) {
-						$.hidePreloader();
+						Zepto.hidePreloader();
 						Zepto.toast("网络不给力");
 					});
 				};
