@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>天池-电力预测(LSTM)</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+    <link rel="stylesheet" href="css/common.css">
+
+
+  </head>
+  <body id="root" v-cloak>
+
+    <div class="page-group">
+        <div class="page page-current">
+            <div class="content-block" style="word-break: break-all;">
+                <p>数据集：提供2015年1月1日到2016年8月31日，1454家企业每日用电量。</p>
+                <p>要求：预测2016年9月每日企业总用电量。</p>
+                <div style="font-size: 12px;">
+                    <p>输入：数据集末尾30天数据=[
+                        <span v-for="in2 in input_data2" track-by="$index">
+                            <span>{{in2}}</span>
+                            <span v-show="$index!=(input_data2.length-1)">,</span>
+                        </span>
+                        <span v-show="input_data3.length>0">,</span>
+                        <span v-for="in3 in input_data3" track-by="$index">
+                            <span style="color: red;">{{in3}}</span>
+                            <span v-show="$index!=(input_data3.length-1)">,</span>
+                        </span>
+                    ]</p>
+                    <p>输出：2016年9月数据=[
+                        <span v-for="ou3 in output_data3" track-by="$index">
+                            <span style="color: red;">{{ou3}}</span>
+                            <span v-show="$index!=(output_data3.length-1)">,</span>
+                        </span>
+                    ]</p>
+                </div>
+                <div style="position: relative;height:400px;">
+                    <div style="position: absolute;text-align: center;font-size: 12px;width: 100%;top: 24px;">
+                        <span style="color: #5793f3">真实值</span>
+                        <span style="color: #d14a61;">预测值</span>
+                    </div>
+                    <div id="main" style="width: 100%;height:100%;position: absolute;top:-80px;"></div>
+                    <div style="position: absolute;width: 100%;bottom: -30px;">
+                        <p><a class="button button-big button-fill button-success" v-on:click="predictBtnClick()">预测</a></p>
+                        <p><a class="button button-big button-fill button-danger" v-on:click="resetBtnClick()">重置</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type="text/javascript" src='js/config.js'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='libs/jquery.min.js'></script>
+    <script type='text/javascript' src='libs/echarts.simple.min.js'></script>
+    <script type="text/javascript" src='libs/vue.js'></script>
+    <script type="text/javascript" src='js/common.js'></script>
+    <script type="text/javascript" src='js/service.js'></script>
+    <script type="text/javascript" src='js/tianchi_power.js'></script>
+  </body>
+
+</html>

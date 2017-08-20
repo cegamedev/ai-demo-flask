@@ -19,6 +19,34 @@ function DataURLtoBlob(dataurl) {
 	});
 }
 
+DeepCopy = function(arrOrObj) {
+    var result = null;
+    if (IsArray(arrOrObj)) {
+        result = [];
+        for (var key in arrOrObj) {
+            result[key] = DeepCopy(arrOrObj[key]);
+        }
+    } else if (typeof arrOrObj === 'object') {
+        result = {};
+        for (var key in arrOrObj) {
+            result[key] = DeepCopy(arrOrObj[key]);
+        }
+    } else {
+        result = arrOrObj;
+    }
+    return result;
+}
+
+/*
+ * 是否是数组*/
+IsArray = function(value) {
+    return value &&
+        typeof value === 'object' &&
+        typeof value.length === 'number' &&
+        typeof value.splice === 'function' &&
+        !(value.propertyIsEnumerable('length'));
+};
+
 Vue.filter('f_date', function(value, format) {
 
 	if (!value) {
