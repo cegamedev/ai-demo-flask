@@ -24,6 +24,7 @@ $(function(){
 			output_data3:[],
 			time_id:0,
 			my_chart:{},
+			is_predict:0
 		},
 		created: function() {
 			var self = this;
@@ -32,6 +33,10 @@ $(function(){
 		methods:{
 			predictBtnClick:function(){
 				var self = this;
+				if(self.is_predict){
+					return;
+				}
+				self.is_predict = 1;
 				var step = 1;
 				self.time_id = setInterval(function(){
 					if(step>30){
@@ -48,6 +53,7 @@ $(function(){
 			resetBtnClick:function(){
 				var self = this;
 				clearInterval(self.time_id);
+				self.is_predict = 0;
 				_resetData();
 			}
 		}

@@ -49,9 +49,9 @@
                         <span style="color: #d14a61;">预测值</span>
                     </div>
                     <div id="main" style="width: 100%;height:100%;position: absolute;top:-80px;"></div>
-                    <div style="position: absolute;width: 100%;bottom: -30px;">
-                        <p><a class="button button-big button-fill button-success" v-on:click="predictBtnClick()">预测</a></p>
-                        <p><a class="button button-big button-fill button-danger" v-on:click="resetBtnClick()">重置</a></p>
+                    <div style="position: absolute;width: 100%;bottom: 30px;">
+                        <p v-if="!is_predict"><a class="button button-big button-fill button-success" v-on:click="predictBtnClick()">预测</a></p>
+                        <p v-if="is_predict"><a class="button button-big button-fill button-danger" v-on:click="resetBtnClick()">重置</a></p>
                     </div>
                 </div>
             </div>
