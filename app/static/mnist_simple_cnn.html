@@ -28,8 +28,8 @@
                 <canvas id='canvas' style="background-color:#fff;display:block;margin:0 auto;"></canvas>
             </div>
             <div class="content-block">
-                <p><a class="button button-big button-fill button-success" v-on:click="uploadImageClick()">识别</a></p>
-                <p><a id="c" class="button button-big button-fill button-danger">清除</a></p>
+                <p v-show="!is_predict"><a class="button button-big button-fill button-success" v-on:click="uploadImageClick()">识别</a></p>
+                <p v-show="is_predict"><a id="c" class="button button-big button-fill button-danger">清除</a></p>
             </div>
             <form style="display:none;" enctype="multipart/form-data"></form>
         </div>
@@ -45,6 +45,7 @@
     <script type="text/javascript" src='js/service.js'></script>
     <script type="text/javascript" src='js/mnist_simple_cnn.js'></script>
 
+    <script src="https://s22.cnzz.com/z_stat.php?id=1263663661&web_id=1263663661" language="JavaScript"></script>
   </body>
 
 </html>

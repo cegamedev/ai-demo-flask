@@ -1,9 +1,12 @@
 $(function() {
 
+	Zepto.init();
+
 	var vu = new Vue({
 		el: '#root',
 		data: {
 			number_lab: '???',
+			is_predict: 0
 		},
 		created: function() {
 			var self = this;
@@ -13,6 +16,12 @@ $(function() {
 		methods: {
 			uploadImageClick: function() {
 				var self = this;
+				if(self.is_predict){
+					return;
+				}
+				self.is_predict = 1;
+				Zepto.showIndicator();
+
 				var canvas = document.getElementById('canvas');
 				var photoBase64 = canvas.toDataURL('image/png');
 				var photoBlob = DataURLtoBlob(photoBase64);
@@ -21,15 +30,15 @@ $(function() {
 				imgform.append('file', photoBlob, 'temp.png');
 
 				AjaxFormUploadImageSimpleCnn(imgform).then(function(data) {
+					Zepto.hideIndicator();
 					self.number_lab = data.data.predict_index;
 				}, function(data) {
+					Zepto.hideIndicator();
 					Zepto.toast("网络不给力");
 				});
 			}
 		}
 	});
-
-	Zepto.init();
 
 	cavan_fun();
 
@@ -87,6 +96,7 @@ $(function() {
 		clear.addEventListener('click', function() {
 			vu.$data.number_lab = '???';
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			vu.$data.is_predict = 0;
 		}, false);
 
 
